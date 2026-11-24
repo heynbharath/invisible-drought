@@ -1,5 +1,5 @@
 import { geoMercator, geoPath } from "d3-geo";
-import { FeatureCollection, Geometry } from "geojson";
+import { FeatureCollection } from "geojson";
 
 export type IndicatorType =
   | "rainfall_z"
@@ -83,22 +83,22 @@ export const INDICATOR_CONFIGS: Record<IndicatorType, IndicatorConfig> = {
   },
 };
 
-// Interpolate continuous color ramps
+// Interpolate continuous high-contrast color ramps
 export function getIndicatorColor(
   indicator: IndicatorType,
   value: number | null | undefined,
   isOutage: boolean
 ): string {
   if (isOutage || value === null || value === undefined || value === -999.0) {
-    return "#28382F"; // Masked / unavailable
+    return "#1A2520"; // Masked / unavailable
   }
 
   if (indicator === "mismatch") {
-    return value ? "#C69B65" : "#18221C"; // Amber for mismatch candidate
+    return value ? "#F59E0B" : "#131C17"; // Vivid glowing amber for mismatch
   }
 
   if (indicator === "stress") {
-    return value ? "#C56E63" : "#18221C"; // Alert red for root-zone stress
+    return value ? "#EF4444" : "#131C17"; // Vivid red for root-zone stress
   }
 
   // Continuous z-scores clamped to [-2.5, +2.5]
@@ -106,41 +106,39 @@ export function getIndicatorColor(
   const normalized = (clamped + 2.5) / 5.0; // 0.0 (extreme deficit) to 1.0 (extreme surplus)
 
   if (indicator === "rainfall_z") {
-    // Brown -> Muted Gray -> Water Blue
+    // High-contrast Amber/Ochre -> Dark Charcoal-Slate -> Vibrant Sky/Azure Blue
     if (normalized < 0.5) {
-      // Deficit: interpolate from amber/brown to dark slate
       const t = normalized / 0.5;
-      return interpolateRgb([198, 155, 101], [30, 42, 35], t);
+      return interpolateRgb([245, 158, 11], [19, 28, 23], t);
     } else {
-      // Surplus: interpolate from dark slate to vivid water blue
       const t = (normalized - 0.5) / 0.5;
-      return interpolateRgb([30, 42, 35], [109, 158, 186], t);
+      return interpolateRgb([19, 28, 23], [56, 189, 248], t);
     }
   }
 
   if (indicator === "ndvi_z" || indicator === "evi_z") {
-    // Burnt Sienna/Dry Ochre -> Dark Charcoal -> Lush Vegetation Green
+    // High-contrast Coral-Crimson -> Dark Slate -> High-Voltage Emerald Green
     if (normalized < 0.5) {
       const t = normalized / 0.5;
-      return interpolateRgb([197, 110, 99], [30, 42, 35], t);
+      return interpolateRgb([239, 68, 68], [19, 28, 23], t);
     } else {
       const t = (normalized - 0.5) / 0.5;
-      return interpolateRgb([30, 42, 35], [139, 175, 114], t);
+      return interpolateRgb([19, 28, 23], [74, 222, 128], t);
     }
   }
 
   if (indicator === "rootzone_z") {
-    // Dry Earth Brown -> Neutral -> Deep Hydrologic Teal
+    // Warm Terracotta -> Dark Slate -> Cyan Hydro
     if (normalized < 0.5) {
       const t = normalized / 0.5;
-      return interpolateRgb([198, 120, 80], [30, 42, 35], t);
+      return interpolateRgb([249, 115, 22], [19, 28, 23], t);
     } else {
       const t = (normalized - 0.5) / 0.5;
-      return interpolateRgb([30, 42, 35], [80, 150, 170], t);
+      return interpolateRgb([19, 28, 23], [6, 182, 212], t);
     }
   }
 
-  return "#18221C";
+  return "#131C17";
 }
 
 function interpolateRgb(c1: [number, number, number], c2: [number, number, number], t: number): string {
@@ -155,8 +153,8 @@ export function createKarnatakaProjection(width: number, height: number, geojson
   const projection = geoMercator();
   projection.fitExtent(
     [
-      [20, 20],
-      [width - 20, height - 20],
+      [24, 24],
+      [width - 24, height - 24],
     ],
     geojson as any
   );

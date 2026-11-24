@@ -80,16 +80,16 @@ export function KarnatakaDistrictMap({
   const config = INDICATOR_CONFIGS[selectedIndicator];
 
   return (
-    <div className={cn("flex flex-col rounded-xl border border-drought-border bg-drought-secondary/90 p-4 lg:p-6", className)}>
+    <div className={cn("flex flex-col rounded-xl border border-white/[0.08] bg-drought-secondary p-4 lg:p-6 shadow-editorial", className)}>
       {/* Outage Banner if applicable */}
       {isOutageSeason && (
-        <div className="mb-4 flex items-start gap-3 rounded-lg border border-drought-alert/40 bg-drought-alert/10 p-3.5 text-xs text-drought-alertLight">
+        <div className="mb-5 flex items-start gap-3 rounded-lg border border-drought-alert/60 bg-drought-alert/15 p-4 text-xs text-drought-alertBright">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-drought-alertLight" />
           <div>
-            <span className="font-semibold uppercase tracking-wider font-mono">
+            <span className="font-bold uppercase tracking-wider font-mono text-white">
               SMAP L4 Assimilation Outage Window Excluded
             </span>
-            <p className="mt-0.5 text-drought-textMuted leading-relaxed">
+            <p className="mt-1 text-drought-textMuted leading-relaxed">
               NASA SMAP Level 4 data assimilation telemetry was offline during this season window. All 27 district observations for Southwest Monsoon {selectedYear} are conservatively excluded from the primary research association sample (54 observations excluded overall).
             </p>
           </div>
@@ -101,9 +101,9 @@ export function KarnatakaDistrictMap({
         <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {/* Year Selector */}
           <div>
-            <label className="mb-1.5 flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-drought-textMuted">
-              <Calendar className="h-3.5 w-3.5 text-drought-vegetation" />
-              <span>Year: {selectedYear}</span>
+            <label className="mb-1.5 flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-drought-textMuted font-semibold">
+              <Calendar className="h-3.5 w-3.5 text-drought-vegetationLight" />
+              <span>Year: <strong className="text-white">{selectedYear}</strong></span>
             </label>
             <div className="flex flex-wrap gap-1">
               {[2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024].map((yr) => (
@@ -112,10 +112,10 @@ export function KarnatakaDistrictMap({
                   type="button"
                   onClick={() => setSelectedYear(yr)}
                   className={cn(
-                    "rounded px-2.5 py-1 font-mono text-xs transition-colors",
+                    "rounded px-2.5 py-1 font-mono text-xs transition-all",
                     selectedYear === yr
-                      ? "bg-drought-vegetation text-drought-bg font-semibold shadow-sm"
-                      : "bg-drought-surface text-drought-textMuted hover:bg-drought-surfaceHover hover:text-drought-text"
+                      ? "bg-drought-vegetation text-drought-bg font-bold shadow-glow-green"
+                      : "bg-drought-surface border border-white/[0.06] text-drought-textMuted hover:border-white/20 hover:text-white"
                   )}
                 >
                   {yr}
@@ -126,8 +126,8 @@ export function KarnatakaDistrictMap({
 
           {/* Season Selector */}
           <div>
-            <label className="mb-1.5 flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-drought-textMuted">
-              <Compass className="h-3.5 w-3.5 text-drought-water" />
+            <label className="mb-1.5 flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-drought-textMuted font-semibold">
+              <Compass className="h-3.5 w-3.5 text-drought-waterLight" />
               <span>Season</span>
             </label>
             <div className="grid grid-cols-2 gap-1 sm:grid-cols-1">
@@ -138,14 +138,14 @@ export function KarnatakaDistrictMap({
                     type="button"
                     onClick={() => setSelectedSeason(s)}
                     className={cn(
-                      "flex items-center justify-between rounded px-2.5 py-1 text-left text-xs transition-colors",
+                      "flex items-center justify-between rounded px-2.5 py-1 text-left text-xs transition-all",
                       selectedSeason === s
-                        ? "bg-drought-water text-drought-bg font-semibold shadow-sm"
-                        : "bg-drought-surface text-drought-textMuted hover:bg-drought-surfaceHover hover:text-drought-text"
+                        ? "bg-drought-water text-drought-bg font-bold shadow-glow-blue"
+                        : "bg-drought-surface border border-white/[0.06] text-drought-textMuted hover:border-white/20 hover:text-white"
                     )}
                   >
                     <span>{s}</span>
-                    <span className="font-mono text-[10px] opacity-75">
+                    <span className="font-mono text-[10px] opacity-80">
                       {s === "Winter"
                         ? "Jan–Feb"
                         : s === "Pre-Monsoon"
@@ -162,8 +162,8 @@ export function KarnatakaDistrictMap({
 
           {/* Indicator Layer Selector */}
           <div>
-            <label className="mb-1.5 flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-drought-textMuted">
-              <Layers className="h-3.5 w-3.5 text-drought-soil" />
+            <label className="mb-1.5 flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-drought-textMuted font-semibold">
+              <Layers className="h-3.5 w-3.5 text-drought-soilLight" />
               <span>Observation Layer</span>
             </label>
             <div className="flex flex-col space-y-1">
@@ -183,14 +183,14 @@ export function KarnatakaDistrictMap({
                     type="button"
                     onClick={() => setSelectedIndicator(ind)}
                     className={cn(
-                      "flex items-center justify-between rounded px-2.5 py-1 text-left text-xs transition-colors",
+                      "flex items-center justify-between rounded px-2.5 py-1 text-left text-xs transition-all",
                       selectedIndicator === ind
-                        ? "bg-drought-soil text-drought-bg font-semibold shadow-sm"
-                        : "bg-drought-surface text-drought-textMuted hover:bg-drought-surfaceHover hover:text-drought-text"
+                        ? "bg-drought-soil text-drought-bg font-bold shadow-glow-amber"
+                        : "bg-drought-surface border border-white/[0.06] text-drought-textMuted hover:border-white/20 hover:text-white"
                     )}
                   >
                     <span className="truncate">{item.label}</span>
-                    <span className="font-mono text-[10px] opacity-75 shrink-0 ml-1">
+                    <span className="font-mono text-[10px] opacity-80 shrink-0 ml-1">
                       {item.source}
                     </span>
                   </button>
@@ -204,18 +204,18 @@ export function KarnatakaDistrictMap({
       {/* Main Map View & Inspector Panel */}
       <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
         {/* Map Visualization Column */}
-        <div className="relative flex flex-col items-center rounded-lg border border-drought-border bg-drought-bg/80 p-2 sm:p-4 lg:col-span-7">
+        <div className="relative flex flex-col items-center rounded-xl border border-white/[0.08] bg-[#0A100D] p-3 sm:p-5 lg:col-span-7 shadow-inner">
           {/* Map Header / Active Layer Details */}
-          <div className="mb-3 flex w-full items-center justify-between border-b border-drought-border/60 pb-2 text-xs">
+          <div className="mb-3 flex w-full items-center justify-between border-b border-white/[0.08] pb-2.5 text-xs">
             <div>
-              <span className="font-mono font-medium text-drought-text">
+              <span className="font-mono font-bold text-white text-sm">
                 {config.label}
               </span>
-              <span className="ml-2 font-mono text-[10px] text-drought-textDim">
+              <span className="ml-2 font-mono text-[11px] text-drought-textDim">
                 ({config.source})
               </span>
             </div>
-            <div className="font-mono text-[11px] text-drought-vegetationLight">
+            <div className="font-mono text-[11px] text-drought-vegetationLight font-semibold">
               {sliceStats.candidates} mismatch &bull; {sliceStats.stressed} stressed
             </div>
           </div>
@@ -241,11 +241,15 @@ export function KarnatakaDistrictMap({
                     y1="0"
                     x2="0"
                     y2="8"
-                    stroke="#C56E63"
+                    stroke="#EF4444"
                     strokeWidth="1.5"
-                    strokeOpacity="0.4"
+                    strokeOpacity="0.5"
                   />
                 </pattern>
+                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
               </defs>
 
               <g>
@@ -290,13 +294,14 @@ export function KarnatakaDistrictMap({
                       fill={fillColor}
                       stroke={
                         isSelected
-                          ? "#F0F0E8"
+                          ? "#FFFFFF"
                           : isHovered
-                          ? "#8BAF72"
-                          : "#28382F"
+                          ? "#4ADE80"
+                          : "#2A3D32"
                       }
-                      strokeWidth={isSelected ? 2.5 : isHovered ? 1.8 : 0.8}
-                      className="cursor-pointer transition-colors duration-150"
+                      strokeWidth={isSelected ? 3.0 : isHovered ? 2.2 : 0.9}
+                      className="cursor-pointer transition-all duration-150"
+                      filter={isSelected ? "url(#glow)" : undefined}
                       onMouseEnter={() => setHoveredDistrictId(districtId)}
                       onMouseLeave={() => setHoveredDistrictId(null)}
                       onClick={() => setSelectedDistrictId(districtId)}
@@ -336,10 +341,10 @@ export function KarnatakaDistrictMap({
                       textAnchor="middle"
                       dominantBaseline="central"
                       className={cn(
-                        "font-mono transition-opacity select-none",
+                        "font-mono transition-opacity select-none font-bold",
                         isSelected || isHovered
-                          ? "fill-drought-text font-bold text-[11px] opacity-100"
-                          : "fill-drought-textMuted text-[8px] opacity-60"
+                          ? "fill-white text-[11px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] opacity-100"
+                          : "fill-drought-textMuted text-[8px] opacity-75"
                       )}
                     >
                       {feature.properties.name.split(" ")[0]}
@@ -351,48 +356,48 @@ export function KarnatakaDistrictMap({
           </div>
 
           {/* Map Color Legend */}
-          <div className="mt-3 w-full border-t border-drought-border/60 pt-2 text-xs">
+          <div className="mt-4 w-full border-t border-white/[0.08] pt-3 text-xs">
             {config.type === "binary" ? (
               <div className="flex items-center justify-center gap-6 font-mono text-[11px]">
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-2">
                   <span
-                    className="h-3 w-3 rounded-sm border border-drought-border"
+                    className="h-3.5 w-3.5 rounded-sm border border-white/20 shadow-sm"
                     style={{
                       backgroundColor:
                         selectedIndicator === "mismatch"
-                          ? "#C69B65"
-                          : "#C56E63",
+                          ? "#F59E0B"
+                          : "#EF4444",
                     }}
                   ></span>
-                  <span>Flagged Condition</span>
+                  <span className="font-semibold text-white">Flagged Condition</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="h-3 w-3 rounded-sm border border-drought-border bg-drought-surface"></span>
+                <div className="flex items-center gap-2">
+                  <span className="h-3.5 w-3.5 rounded-sm border border-white/10 bg-drought-surface"></span>
                   <span className="text-drought-textMuted">Normal / Unflagged</span>
                 </div>
                 {isOutageSeason && (
-                  <div className="flex items-center gap-1.5">
-                    <span className="h-3 w-3 rounded-sm border border-drought-alert/40 bg-drought-alert/20"></span>
-                    <span className="text-drought-alertLight">SMAP Outage Excluded</span>
+                  <div className="flex items-center gap-2">
+                    <span className="h-3.5 w-3.5 rounded-sm border border-drought-alert/60 bg-drought-alert/25"></span>
+                    <span className="text-drought-alertBright font-semibold">SMAP Outage Excluded</span>
                   </div>
                 )}
               </div>
             ) : (
               <div className="flex flex-col items-center">
-                <div className="flex w-full max-w-xs items-center justify-between font-mono text-[10px] text-drought-textDim">
-                  <span>-2.5σ (Deficit)</span>
-                  <span>0.0σ</span>
-                  <span>+2.5σ (Surplus)</span>
+                <div className="flex w-full max-w-sm items-center justify-between font-mono text-[11px] text-drought-textMuted mb-1 font-semibold">
+                  <span className="text-drought-soilLight">-2.5σ (Extreme Deficit)</span>
+                  <span className="text-drought-textDim">0.0σ</span>
+                  <span className="text-drought-vegetationLight">+2.5σ (Extreme Surplus)</span>
                 </div>
                 <div
-                  className="h-2 w-full max-w-xs rounded-full border border-drought-border"
+                  className="h-2.5 w-full max-w-sm rounded-full border border-white/15 shadow-sm"
                   style={{
                     background:
                       selectedIndicator === "rainfall_z"
-                        ? "linear-gradient(to right, rgb(198,155,101), rgb(30,42,35), rgb(109,158,186))"
+                        ? "linear-gradient(to right, rgb(245,158,11), rgb(19,28,23), rgb(56,189,248))"
                         : selectedIndicator === "rootzone_z"
-                        ? "linear-gradient(to right, rgb(198,120,80), rgb(30,42,35), rgb(80,150,170))"
-                        : "linear-gradient(to right, rgb(197,110,99), rgb(30,42,35), rgb(139,175,114))",
+                        ? "linear-gradient(to right, rgb(249,115,22), rgb(19,28,23), rgb(6,182,212))"
+                        : "linear-gradient(to right, rgb(239,68,68), rgb(19,28,23), rgb(74,222,128))",
                   }}
                 ></div>
               </div>
@@ -401,44 +406,44 @@ export function KarnatakaDistrictMap({
         </div>
 
         {/* District Detail Inspector Drawer */}
-        <div className="flex flex-col rounded-lg border border-drought-border bg-drought-surface/90 p-4 lg:col-span-5">
-          <div className="border-b border-drought-border pb-3">
-            <span className="font-mono text-[10px] uppercase tracking-wider text-drought-vegetationLight">
+        <div className="flex flex-col rounded-xl border border-white/[0.08] bg-drought-surface p-5 lg:col-span-5 shadow-editorial">
+          <div className="border-b border-white/[0.08] pb-3">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-drought-vegetationLight font-bold">
               District Detail Inspector
             </span>
-            <h3 className="font-serif text-xl font-medium text-drought-text">
+            <h3 className="font-serif text-2xl font-semibold text-white mt-0.5">
               {selectedDistrictMeta?.name || "Select a District"}
             </h3>
-            <p className="font-mono text-xs text-drought-textDim">
-              Agro-Ecological Region: {selectedDistrictMeta?.administrativeRegion} &bull; Area: {selectedDistrictMeta?.areaKm2.toLocaleString()} km²
+            <p className="font-mono text-xs text-drought-textMuted mt-1">
+              Agro-Ecological Region: <strong className="text-white">{selectedDistrictMeta?.administrativeRegion}</strong> &bull; Area: {selectedDistrictMeta?.areaKm2.toLocaleString()} km²
             </p>
           </div>
 
           {selectedRecord ? (
             <div className="mt-4 space-y-4">
               {/* Classification Badges */}
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2.5">
                 <div
                   className={cn(
-                    "flex flex-col rounded-md border p-2.5 text-xs",
+                    "flex flex-col rounded-lg border p-3 text-xs",
                     selectedRecord.isMismatchCandidate
-                      ? "border-drought-soil/60 bg-drought-soil/10 text-drought-soilLight"
-                      : "border-drought-border bg-drought-bg/60 text-drought-textMuted"
+                      ? "border-drought-soil bg-drought-soil/15 text-drought-soilBright shadow-glow-amber"
+                      : "border-white/[0.08] bg-drought-bg/60 text-drought-textMuted"
                   )}
                 >
-                  <span className="font-mono text-[10px] uppercase tracking-wider opacity-80">
+                  <span className="font-mono text-[10px] uppercase tracking-wider font-semibold opacity-80">
                     Mismatch Candidate
                   </span>
-                  <div className="mt-1 flex items-center gap-1.5 font-semibold">
+                  <div className="mt-1 flex items-center gap-1.5 font-bold text-sm">
                     {selectedRecord.isMismatchCandidate ? (
                       <>
-                        <CheckCircle2 className="h-4 w-4 text-drought-soil" />
-                        <span>FLAGGED</span>
+                        <CheckCircle2 className="h-4 w-4 text-drought-soilLight" />
+                        <span className="text-white">FLAGGED</span>
                       </>
                     ) : (
                       <>
-                        <XCircle className="h-4 w-4 opacity-50" />
-                        <span>Not Mismatched</span>
+                        <XCircle className="h-4 w-4 opacity-40" />
+                        <span>Unflagged</span>
                       </>
                     )}
                   </div>
@@ -446,24 +451,24 @@ export function KarnatakaDistrictMap({
 
                 <div
                   className={cn(
-                    "flex flex-col rounded-md border p-2.5 text-xs",
+                    "flex flex-col rounded-lg border p-3 text-xs",
                     selectedRecord.isRootzoneStressed
-                      ? "border-drought-alert/60 bg-drought-alert/10 text-drought-alertLight"
-                      : "border-drought-border bg-drought-bg/60 text-drought-textMuted"
+                      ? "border-drought-alert bg-drought-alert/15 text-drought-alertBright shadow-glow-alert"
+                      : "border-white/[0.08] bg-drought-bg/60 text-drought-textMuted"
                   )}
                 >
-                  <span className="font-mono text-[10px] uppercase tracking-wider opacity-80">
+                  <span className="font-mono text-[10px] uppercase tracking-wider font-semibold opacity-80">
                     Root-Zone Stress
                   </span>
-                  <div className="mt-1 flex items-center gap-1.5 font-semibold">
+                  <div className="mt-1 flex items-center gap-1.5 font-bold text-sm">
                     {selectedRecord.isRootzoneStressed ? (
                       <>
-                        <CheckCircle2 className="h-4 w-4 text-drought-alert" />
-                        <span>STRESSED (z ≤ -1)</span>
+                        <CheckCircle2 className="h-4 w-4 text-drought-alertLight" />
+                        <span className="text-white">STRESSED (z ≤ -1)</span>
                       </>
                     ) : (
                       <>
-                        <XCircle className="h-4 w-4 opacity-50" />
+                        <XCircle className="h-4 w-4 opacity-40" />
                         <span>Normal Moisture</span>
                       </>
                     )}
@@ -472,60 +477,60 @@ export function KarnatakaDistrictMap({
               </div>
 
               {/* Indicator Values Table */}
-              <div className="rounded-md border border-drought-border bg-drought-bg/40 p-3">
-                <span className="font-mono text-[11px] uppercase tracking-wider text-drought-textMuted">
-                  {selectedSeason} {selectedYear} Measurements
+              <div className="rounded-lg border border-white/[0.08] bg-drought-bg/60 p-4">
+                <span className="font-mono text-[11px] uppercase tracking-wider text-drought-textMuted font-bold">
+                  {selectedSeason} {selectedYear} Satellite Extractions
                 </span>
-                <div className="mt-2 space-y-2.5 text-xs">
+                <div className="mt-3 space-y-3 text-xs">
                   {/* Rainfall */}
-                  <div className="flex items-center justify-between border-b border-drought-border/40 pb-1.5">
+                  <div className="flex items-center justify-between border-b border-white/[0.06] pb-2">
                     <div>
-                      <div className="font-medium text-drought-text">Seasonal Rainfall</div>
+                      <div className="font-semibold text-white">Seasonal Rainfall</div>
                       <div className="font-mono text-[10px] text-drought-textDim">
                         CHIRPS spatial mean depth
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-mono font-semibold text-drought-waterLight">
+                      <div className="font-mono font-bold text-drought-waterBright text-sm">
                         {selectedRecord.rainfallMm} mm
                       </div>
-                      <div className="font-mono text-[10px] text-drought-textMuted">
+                      <div className="font-mono text-[11px] text-drought-textMuted font-semibold">
                         LOYO z: {selectedRecord.rainfallZScore >= 0 ? `+${selectedRecord.rainfallZScore}` : selectedRecord.rainfallZScore}
                       </div>
                     </div>
                   </div>
 
                   {/* NDVI */}
-                  <div className="flex items-center justify-between border-b border-drought-border/40 pb-1.5">
+                  <div className="flex items-center justify-between border-b border-white/[0.06] pb-2">
                     <div>
-                      <div className="font-medium text-drought-text">Canopy NDVI</div>
+                      <div className="font-semibold text-white">Canopy NDVI</div>
                       <div className="font-mono text-[10px] text-drought-textDim">
                         MODIS MOD13Q1 median
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-mono font-semibold text-drought-vegetationLight">
+                      <div className="font-mono font-bold text-drought-vegetationBright text-sm">
                         {selectedRecord.ndviMean}
                       </div>
-                      <div className="font-mono text-[10px] text-drought-textMuted">
+                      <div className="font-mono text-[11px] text-drought-textMuted font-semibold">
                         LOYO z: {selectedRecord.ndviZScore >= 0 ? `+${selectedRecord.ndviZScore}` : selectedRecord.ndviZScore}
                       </div>
                     </div>
                   </div>
 
                   {/* EVI */}
-                  <div className="flex items-center justify-between border-b border-drought-border/40 pb-1.5">
+                  <div className="flex items-center justify-between border-b border-white/[0.06] pb-2">
                     <div>
-                      <div className="font-medium text-drought-text">Enhanced Veg. Index (EVI)</div>
+                      <div className="font-semibold text-white">Enhanced Veg. Index (EVI)</div>
                       <div className="font-mono text-[10px] text-drought-textDim">
                         MODIS MOD13Q1 median
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-mono font-semibold text-drought-vegetationLight">
+                      <div className="font-mono font-bold text-drought-vegetationBright text-sm">
                         {selectedRecord.eviMean}
                       </div>
-                      <div className="font-mono text-[10px] text-drought-textMuted">
+                      <div className="font-mono text-[11px] text-drought-textMuted font-semibold">
                         LOYO z: {selectedRecord.eviZScore >= 0 ? `+${selectedRecord.eviZScore}` : selectedRecord.eviZScore}
                       </div>
                     </div>
@@ -534,22 +539,22 @@ export function KarnatakaDistrictMap({
                   {/* Rootzone SM */}
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium text-drought-text">Root-Zone Soil Moisture</div>
+                      <div className="font-semibold text-white">Root-Zone Soil Moisture</div>
                       <div className="font-mono text-[10px] text-drought-textDim">
                         SMAP L4 (0–100 cm depth)
                       </div>
                     </div>
                     <div className="text-right">
                       {selectedRecord.isExcludedOutage ? (
-                        <span className="font-mono text-[10px] text-drought-alertLight">
+                        <span className="font-mono text-[11px] font-bold text-drought-alertLight">
                           Outage Excluded
                         </span>
                       ) : (
                         <>
-                          <div className="font-mono font-semibold text-drought-soilLight">
+                          <div className="font-mono font-bold text-drought-soilBright text-sm">
                             {selectedRecord.rootzoneSm} m³/m³
                           </div>
-                          <div className="font-mono text-[10px] text-drought-textMuted">
+                          <div className="font-mono text-[11px] text-drought-textMuted font-semibold">
                             LOYO z: {selectedRecord.rootzoneZScore >= 0 ? `+${selectedRecord.rootzoneZScore}` : selectedRecord.rootzoneZScore}
                           </div>
                         </>
@@ -560,17 +565,14 @@ export function KarnatakaDistrictMap({
               </div>
 
               {/* LOYO Definition Callout */}
-              <div className="rounded-md border border-drought-border/60 bg-drought-bg/60 p-2.5 text-[11px] leading-relaxed text-drought-textDim">
-                <span className="font-mono font-semibold text-drought-text">
-                  LOYO Standard:
-                </span>{" "}
-                Anomaly z-scores compare this district&apos;s {selectedSeason} {selectedYear} against the other 8 study years using sample standard deviation (ddof=1).
+              <div className="rounded-lg border border-white/[0.08] bg-drought-bg/80 p-3 text-[11px] leading-relaxed text-drought-textMuted">
+                <strong className="text-white font-mono">LOYO Standard:</strong> Anomaly z-scores compare this district&apos;s {selectedSeason} {selectedYear} against the other 8 study years using sample standard deviation (ddof=1).
               </div>
             </div>
           ) : (
-            <div className="mt-8 flex flex-col items-center justify-center py-6 text-center text-xs text-drought-textDim">
-              <Info className="h-6 w-6 text-drought-border" />
-              <p className="mt-2">Select any district polygon on the map to inspect its satellite observations.</p>
+            <div className="mt-8 flex flex-col items-center justify-center py-6 text-center text-xs text-drought-textMuted">
+              <Info className="h-6 w-6 text-drought-borderLight" />
+              <p className="mt-2 text-white">Select any district polygon on the map to inspect its satellite observations.</p>
             </div>
           )}
         </div>
