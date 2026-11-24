@@ -41,7 +41,7 @@ export function KarnatakaDistrictMap({
   const mapWidth = 520;
   const mapHeight = 640;
 
-  const { pathGenerator } = useMemo(() => {
+  const { pathGenerator, normalizedGeojson } = useMemo(() => {
     return createKarnatakaProjection(mapWidth, mapHeight, geojsonData);
   }, []);
 
@@ -253,7 +253,7 @@ export function KarnatakaDistrictMap({
               </defs>
 
               <g>
-                {geojsonData.features.map((feature: any) => {
+                {normalizedGeojson.features.map((feature: any) => {
                   const districtId = feature.properties.id;
                   const districtName = feature.properties.name;
                   const path = pathGenerator(feature as any);
@@ -324,14 +324,45 @@ export function KarnatakaDistrictMap({
                 })}
               </g>
 
+              {/* Selected district boundary overlay to ensure highlight stroke is never occluded */}
+              {selectedDistrictId && (() => {
+                const activeFeature = normalizedGeojson.features.find(
+                  (f: any) => f.properties.id === selectedDistrictId
+                );
+                if (!activeFeature) return null;
+                const path = pathGenerator(activeFeature as any);
+                if (!path) return null;
+                return (
+                  <path
+                    d={path}
+                    fill="none"
+                    stroke="#FFFFFF"
+                    strokeWidth={3.0}
+                    filter="url(#glow)"
+                    pointerEvents="none"
+                  />
+                );
+              })()}
+
               {/* District Name Centroid Text Markers */}
               <g pointerEvents="none">
-                {geojsonData.features.map((feature: any) => {
+                {normalizedGeojson.features.map((feature: any) => {
                   const districtId = feature.properties.id;
                   const isSelected = selectedDistrictId === districtId;
                   const isHovered = hoveredDistrictId === districtId;
                   const centroid = pathGenerator.centroid(feature as any);
                   if (isNaN(centroid[0]) || isNaN(centroid[1])) return null;
+
+                  const displayName =
+                    districtId === "bangalore-urban"
+                      ? "Blr Urban"
+                      : districtId === "bangalore-rural"
+                      ? "Blr Rural"
+                      : districtId === "uttara-kannada"
+                      ? "U. Kannada"
+                      : districtId === "dakshina-kannada"
+                      ? "D. Kannada"
+                      : feature.properties.name.split(" ")[0];
 
                   return (
                     <text
@@ -347,7 +378,7 @@ export function KarnatakaDistrictMap({
                           : "fill-drought-textMuted text-[8px] opacity-75"
                       )}
                     >
-                      {feature.properties.name.split(" ")[0]}
+                      {displayName}
                     </text>
                   );
                 })}

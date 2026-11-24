@@ -48,7 +48,8 @@ def generate_district_polygon(d):
     seed = hash(d["id"])
     rnd = random.Random(seed)
     for i in range(num_pts):
-        angle = (2 * math.pi * i) / num_pts
+        # Clockwise angular progression to satisfy d3-geo spherical projection right-hand rule
+        angle = -(2 * math.pi * i) / num_pts
         noise = 0.85 + 0.3 * rnd.random()
         pt_lon = lon + r_lon * math.cos(angle) * noise
         pt_lat = lat + r_lat * math.sin(angle) * noise

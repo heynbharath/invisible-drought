@@ -1,4 +1,4 @@
-import { geoMercator, geoPath } from "d3-geo";
+import { geoMercator, geoPath, geoArea } from "d3-geo";
 import { FeatureCollection } from "geojson";
 
 export type IndicatorType =
@@ -148,16 +148,64 @@ function interpolateRgb(c1: [number, number, number], c2: [number, number, numbe
   return `rgb(${r}, ${g}, ${b})`;
 }
 
+/**
+ * Rewind GeoJSON polygon coordinates if their spherical area exceeds a hemisphere (> 2π).
+ * In d3-geo, an inverted winding order causes polygons to be interpreted as covering
+ * the entire globe except the small region, producing blank or bounding-box clipping artifacts.
+ */
+export function normalizeGeojsonWinding<T extends FeatureCollection>(geojson: T): T {
+  if (!geojson || !Array.isArray(geojson.features)) return geojson;
+
+  const normalizedFeatures = geojson.features.map((feature) => {
+    if (!feature || !feature.geometry) return feature;
+    const geom = feature.geometry;
+
+    if (geom.type === "Polygon") {
+      const polygonGeom = geom as { type: "Polygon"; coordinates: number[][][] };
+      if (geoArea(feature as any) > 2 * Math.PI) {
+        return {
+          ...feature,
+          geometry: {
+            ...polygonGeom,
+            coordinates: polygonGeom.coordinates.map((ring) => [...ring].reverse()),
+          },
+        };
+      }
+    } else if (geom.type === "MultiPolygon") {
+      const multiGeom = geom as { type: "MultiPolygon"; coordinates: number[][][][] };
+      if (geoArea(feature as any) > 2 * Math.PI) {
+        return {
+          ...feature,
+          geometry: {
+            ...multiGeom,
+            coordinates: multiGeom.coordinates.map((poly) =>
+              poly.map((ring) => [...ring].reverse())
+            ),
+          },
+        };
+      }
+    }
+
+    return feature;
+  });
+
+  return {
+    ...geojson,
+    features: normalizedFeatures,
+  };
+}
+
 // Generate D3 Mercator projection fitted to Karnataka bounding box
 export function createKarnatakaProjection(width: number, height: number, geojson: FeatureCollection) {
+  const normalizedGeojson = normalizeGeojsonWinding(geojson);
   const projection = geoMercator();
   projection.fitExtent(
     [
       [24, 24],
       [width - 24, height - 24],
     ],
-    geojson as any
+    normalizedGeojson as any
   );
   const pathGenerator = geoPath().projection(projection);
-  return { projection, pathGenerator };
+  return { projection, pathGenerator, normalizedGeojson };
 }
